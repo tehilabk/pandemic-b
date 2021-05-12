@@ -12,9 +12,9 @@ namespace pandemic{
 
 class GeneSplicer: public Player{
     public:
-        GeneSplicer(const Board& board, const City& city);
+        GeneSplicer(Board& gameBoard, City currCity);
         string role();
-        Player& discover_cure(const Color& color);
+        Player& discover_cure(Color color);
 };
 
 }    

@@ -3,30 +3,36 @@
 #include "Color.hpp"
 #include "Board.hpp"
 #include "string"
-#include "vector"
+#include <set>
+#include <map>
 #include <stdio.h>
 
 using namespace std;
 namespace pandemic{
 
+const int fiveCards = 5;
+
 class Player{
 
-    private:
-        Board gameBoard;
+    protected:
+        Board& gameBoard;
         City currCity;
-        vector<City> cards;
+        set<City> cards;
+        map<Color,set<City>> colorNum;
+        map<Color,bool>colorCured;
+
 
     public:
-        Player(const Board& board, const City& city);
-        ~Player(){};
-        virtual Player& drive(const City& city);
-        virtual Player& fly_direct(const City& city);
-        virtual Player& fly_charter(const City& city);
-        virtual Player& fly_shuttle(const City& city);
+        Player(Board& board, City city):gameBoard(board), currCity(city){}
+        virtual Player& drive(City dest);
+        virtual Player& fly_direct(City dest);
+        virtual Player& fly_charter(City dest);
+        virtual Player& fly_shuttle(City dest);
         virtual Player& build();               
-        virtual Player& discover_cure(const Color& color);
-        virtual Player& treat(const City& city);
-        Player& take_card (const City& city);
+        virtual Player& discover_cure(Color color);
+        virtual Player& treat(City city);
+        Player& take_card (City city);
         virtual std::string role () = 0;
+        void remove_cards();
     };
 }    

@@ -7,7 +7,7 @@ using namespace pandemic;
 
 namespace pandemic
 {
-    Medic::Medic(const Board &board, const City &city): Player(board, city){
+    Medic::Medic(Board &gameBoard, City currCity): Player(gameBoard, currCity){
     }
 
     string Medic::role() {
@@ -15,7 +15,19 @@ namespace pandemic
         return name;
     }
 
-    Player& Medic::treat(const City& city) {
+    Player& Medic::treat(City city) {
+        if (currCity != city)
+        {
+            throw invalid_argument("can't treat another city");
+        }
+        int disease_level = gameBoard.get_disease_level(city);
+        if (disease_level == 0)
+        {
+            throw invalid_argument("can't treat, disease level=0");
+        }
+        
+        gameBoard.set_disease_level(city, disease_level);
         return *this;
+        
     }
 }

@@ -20,7 +20,6 @@ namespace pandemic
             int diseaseLevel;
             bool research;
             Color color;
-            bool cure;
             string cityToString;
             string colorToString;
         };
@@ -28,10 +27,17 @@ namespace pandemic
 
     public:
         Board();
-        int &operator[](const City &city);
-        friend ostream &operator<<(ostream &out, const Board &board);
+        int &operator[](City city);
+        friend ostream &operator<<(ostream &out,Board &board);
         bool is_clean();
         void remove_cures();
         void remove_stations();
+    
+        bool is_neighbors(City src, City dest);
+        bool has_research(City city);
+        void build_research(City city);
+        int get_disease_level(City city);
+        void set_disease_level(City city, int levelDown);
+        Color get_color(City city);
     };
 }

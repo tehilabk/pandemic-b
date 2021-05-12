@@ -11,7 +11,7 @@ namespace pandemic{
 
 class OperationsExpert: public Player{
     public:
-        OperationsExpert(const Board& board, const City& city);
+        OperationsExpert(Board& gameBoard, City currCity);
         string role();
         Player& build();
 };

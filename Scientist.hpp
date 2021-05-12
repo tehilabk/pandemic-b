@@ -13,8 +13,8 @@ class Scientist: public Player{
     private:
         int numOfCards;
     public:
-        Scientist(const Board& board, const City& city, const int numOfCards);
+        Scientist(Board &gameBoard, City currCity, int numOfCards);
         string role();
-        Player& discover_cure(const Color& color);
+        Player& discover_cure(Color color);
 };
 }    

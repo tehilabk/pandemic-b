@@ -11,8 +11,8 @@ namespace pandemic{
 
 class Medic: public Player{
     public:
-        Medic(const Board& board, const City& city);
+        Medic(Board &gameBoard, City currCity);
         string role();
-        Player& treat(const City& city);
+        Player& treat(City city);
 };
 }        

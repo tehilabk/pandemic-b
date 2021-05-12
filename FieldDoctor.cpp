@@ -7,14 +7,14 @@ using namespace pandemic;
 
 namespace pandemic{
 
-    FieldDoctor::FieldDoctor(const Board& board, const City& city):Player(board, city){}
+    FieldDoctor::FieldDoctor(Board& board, City city):Player(board, city){}
 
     string FieldDoctor::role(){
        string name = typeid(FieldDoctor).name();
        return name;
     }
     
-    Player& FieldDoctor::treat(const City& city){
+    Player& FieldDoctor::treat(City city){
         return *this;
     }
 

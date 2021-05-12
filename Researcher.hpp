@@ -11,9 +11,9 @@ namespace pandemic{
 
 class Researcher: public Player{
     public:
-        Researcher(const Board& board, const City& city);
+        Researcher(Board& gameBoard, City currCity): Player(gameBoard, currCity){}
         string role();
-        Player& discover_cure(const Color& color);
+        Player& discover_cure(Color color);
 };
 
 }    

@@ -7,14 +7,19 @@ using namespace pandemic;
 
 namespace pandemic
 {
-    OperationsExpert::OperationsExpert(const Board &board, const City &city): Player(board, city){}
 
-    string OperationsExpert::role() {
+    OperationsExpert::OperationsExpert(Board& gameBoard, City currCity) : Player(gameBoard, currCity) {}
+
+    string OperationsExpert::role()
+    {
         string name = typeid(OperationsExpert).name();
         return name;
     }
 
-    Player& OperationsExpert::build() {
+    Player &OperationsExpert::build()
+    {
+        this->gameBoard.build_research(currCity);
         return *this;
     }
+
 }
