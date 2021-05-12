@@ -1,3 +1,4 @@
+
 #pragma once
 #include "Player.hpp"
 #include "City.hpp"
@@ -6,15 +7,12 @@
 #include "string"
 #include <stdio.h>
 using namespace std;
-
 namespace pandemic{
 
-class Scientist: public Player{
-    private:
-        int numOfCards;
+class FieldDoctor: public Player{
     public:
-        Scientist(Board &gameBoard, City currCity, int numOfCards);
+        FieldDoctor(Board& gameBoard, City currCity): Player(gameBoard, currCity) {}
         string role();
-        Player& discover_cure(Color color);
+        Player& treat(City city);
 };
-}    
+}        

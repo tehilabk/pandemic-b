@@ -7,8 +7,7 @@ using namespace pandemic;
 
 namespace pandemic
 {
-    Medic::Medic(Board &gameBoard, City currCity): Player(gameBoard, currCity){
-    }
+   
 
     string Medic::role() {
         string name = typeid(Medic).name();

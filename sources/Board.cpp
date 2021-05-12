@@ -9,7 +9,7 @@ namespace pandemic
 
     Board::Board()
     {
-        ifstream cities{"cities_map.txt"};
+        ifstream cities{"../cities_map.txt"};
         string city, color;
         while (cities >> city >> color)
         {
@@ -17,7 +17,6 @@ namespace pandemic
             dataMap[city_name].cityToString = city;
             dataMap[city_name].diseaseLevel = 0;
             dataMap[city_name].research = false;
-            dataMap[city_name].cure = false;
             Color city_color = stringToColor.find(color)->second;
             dataMap[city_name].colorToString = color;
             dataMap[city_name].color = city_color;
@@ -54,10 +53,6 @@ namespace pandemic
 
     void Board::remove_cures()
     {
-        for (auto cities : dataMap)
-        {
-            cities.second.cure = false;
-        }
     }
 
     void Board::remove_stations()

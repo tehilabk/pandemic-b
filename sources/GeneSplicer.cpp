@@ -7,7 +7,6 @@ using namespace pandemic;
 namespace pandemic
 {
 
-    GeneSplicer::GeneSplicer(Board &gameBoard, City currCity) : Player(gameBoard, currCity) {}
 
     string GeneSplicer::role()
     {

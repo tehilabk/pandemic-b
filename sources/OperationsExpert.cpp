@@ -8,8 +8,6 @@ using namespace pandemic;
 namespace pandemic
 {
 
-    OperationsExpert::OperationsExpert(Board& gameBoard, City currCity) : Player(gameBoard, currCity) {}
-
     string OperationsExpert::role()
     {
         string name = typeid(OperationsExpert).name();

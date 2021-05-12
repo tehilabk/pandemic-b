@@ -1,12 +1,9 @@
 #include "Player.hpp"
-#include "City.hpp"
-#include "Color.hpp"
-#include "Board.hpp"
+
 using namespace std;
 using namespace pandemic;
 
-namespace pandemic
-{
+
 
     Player &Player::drive(City dest)
     {
@@ -135,4 +132,3 @@ namespace pandemic
         colorNum.clear();
     }
 
-}

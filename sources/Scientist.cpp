@@ -1,5 +1,4 @@
 #include "Scientist.hpp"
-
 #include "string"
 #include <typeinfo>
 
@@ -8,17 +7,14 @@ using namespace pandemic;
 
 namespace pandemic
 {
-    Scientist::Scientist(Board &gameBoard, City currCity, int numOfCards): Player(gameBoard, currCity){
-        this->numOfCards= numOfCards;
-    }
-
+   
     string Scientist::role() {
         string name = typeid(Scientist).name();
         return name;
     }
 
     Player& Scientist::discover_cure(Color color) {
-        if (!(colorCured[color])))
+        if (!(colorCured[color]))
         {
             if (!(this->gameBoard.has_research(this->currCity)))
             {

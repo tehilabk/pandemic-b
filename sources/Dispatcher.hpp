@@ -12,7 +12,7 @@ namespace pandemic{
 
 class Dispatcher: public Player{
     public:
-        Dispatcher(Board& gameBoard, City currCity);
+        Dispatcher(Board& gameBoard, City currCity): Player(gameBoard, currCity) {}
         string role();
         Player& fly_direct(City city);
 };

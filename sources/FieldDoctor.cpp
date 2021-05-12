@@ -7,7 +7,6 @@ using namespace pandemic;
 
 namespace pandemic{
 
-    FieldDoctor::FieldDoctor(Board& board, City city):Player(board, city){}
 
     string FieldDoctor::role(){
        string name = typeid(FieldDoctor).name();
