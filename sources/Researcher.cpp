@@ -10,8 +10,7 @@ namespace pandemic
 
     string Researcher::role()
     {
-        string name = typeid(Researcher).name();
-        return name;
+        return my_role;
     }
 
     Player &Researcher::discover_cure(Color color)

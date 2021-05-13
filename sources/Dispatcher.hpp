@@ -11,8 +11,12 @@ using namespace std;
 namespace pandemic{
 
 class Dispatcher: public Player{
+    private:
+        string my_role;
     public:
-        Dispatcher(Board& gameBoard, City currCity): Player(gameBoard, currCity) {}
+        Dispatcher(Board& gameBoard, City currCity): Player(gameBoard, currCity) {
+            my_role = "Dispatcher";
+        }
         string role();
         Player& fly_direct(City city);
 };

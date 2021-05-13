@@ -9,8 +9,7 @@ namespace pandemic
 
     string GeneSplicer::role()
     {
-        string name = typeid(GeneSplicer).name();
-        return name;
+        return my_role;
     }
 
     Player &GeneSplicer::discover_cure(Color color)

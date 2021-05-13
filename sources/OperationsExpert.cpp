@@ -11,8 +11,7 @@ namespace pandemic
 
     string OperationsExpert::role()
     {
-        string name = typeid(OperationsExpert).name();
-        return name;
+       return my_role;
     }
 
     Player &OperationsExpert::build()

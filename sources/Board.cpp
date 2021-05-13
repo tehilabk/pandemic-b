@@ -78,7 +78,7 @@ namespace pandemic
 
     bool has_research(Board &b,City city)
     {
-        if (b.dataMap[city].research)
+        if (b.dataMap.at(city).research == true)
         {
             return true;
         }
@@ -98,7 +98,7 @@ namespace pandemic
     {
         if (b.dataMap[city].diseaseLevel >= levelDown)
         {
-            b.dataMap[city].diseaseLevel = (b.dataMap[city].diseaseLevel)-levelDown;
+            b.dataMap[city].diseaseLevel -= levelDown;
         }
     }
 

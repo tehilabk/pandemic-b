@@ -9,8 +9,7 @@ namespace pandemic{
 
 
     string FieldDoctor::role(){
-       string name = typeid(FieldDoctor).name();
-       return name;
+      return my_role;
     }
     
     Player& FieldDoctor::treat(City city){

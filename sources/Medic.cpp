@@ -49,10 +49,7 @@ namespace pandemic
         {
             throw invalid_argument("can't fly_direct from city to itself");
         }
-        if (cards.find(dest) == cards.end())
-        {
-            throw invalid_argument("can't fly_direct, need the city card");
-        }
+      
         if (is_discovered(this->gameBoard,get_color(this->gameBoard,dest)))
         {
             int disease_level = get_disease_level(this->gameBoard,dest);
@@ -81,8 +78,7 @@ namespace pandemic
 
     string Medic::role()
     {
-        string name = typeid(Medic).name();
-        return name;
+        return my_role;
     }
 
     Player &Medic::treat(City city)

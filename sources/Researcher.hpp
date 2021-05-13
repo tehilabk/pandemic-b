@@ -10,8 +10,12 @@ using namespace std;
 namespace pandemic{
 
 class Researcher: public Player{
+    private:
+        string my_role;
     public:
-        Researcher(Board& gameBoard, City currCity): Player(gameBoard, currCity){}
+        Researcher(Board& gameBoard, City currCity): Player(gameBoard, currCity){
+            my_role = "Researcher";
+        }
         string role();
         Player& discover_cure(Color color);
 };

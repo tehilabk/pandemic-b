@@ -10,8 +10,12 @@ using namespace std;
 namespace pandemic{
 
 class FieldDoctor: public Player{
+    private:
+        string my_role;
     public:
-        FieldDoctor(Board& gameBoard, City currCity): Player(gameBoard, currCity) {}
+        FieldDoctor(Board& gameBoard, City currCity): Player(gameBoard, currCity) {
+            my_role = "FieldDoctor";
+        }
         string role();
         Player& treat(City city);
 };

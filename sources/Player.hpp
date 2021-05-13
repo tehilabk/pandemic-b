@@ -21,7 +21,7 @@ class Player{
         map<Color,set<City>> colorNum;
        
 
-
+    
     public:
         Player(Board& board, City city):gameBoard(board), currCity(city){}
         virtual Player& drive(City dest);

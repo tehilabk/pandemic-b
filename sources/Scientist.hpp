@@ -15,11 +15,14 @@ namespace pandemic
     {
     private:
         int numOfCards;
+        string my_role;
+
 
     public:
         Scientist(Board &gameBoard, City currCity, int numOfCards) : Player(gameBoard, currCity)
         {
             this->numOfCards = numOfCards;
+            my_role = "Scientist";
         }
         string role();
         Player &discover_cure(Color color);

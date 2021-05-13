@@ -10,8 +10,12 @@ using namespace std;
 namespace pandemic{
 
 class Medic: public Player{
+    private:
+        string my_role;
     public:
-        Medic(Board &gameBoard, City currCity): Player(gameBoard, currCity) {}
+        Medic(Board &gameBoard, City currCity): Player(gameBoard, currCity) {
+            my_role = "Medic";
+        }
         Player& drive(City dest);
         Player& fly_direct(City dest);
         Player& fly_charter(City dest);
