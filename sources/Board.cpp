@@ -9,21 +9,21 @@ namespace pandemic
 
     Board::Board()
     {
-        ifstream cities{"../cities_map.txt"};
+        ifstream cities{"cities_map.txt"};
         string city, color;
         while (cities >> city >> color)
         {
             City city_name = stringToCity.find(city)->second;
-            dataMap[city_name].cityToString = city;
-            dataMap[city_name].diseaseLevel = 0;
-            dataMap[city_name].research = false;
+            this->dataMap[city_name].cityToString = city;
+            this->dataMap[city_name].diseaseLevel = 0;
+            this->dataMap[city_name].research = false;
             Color city_color = stringToColor.find(color)->second;
-            dataMap[city_name].colorToString = color;
-            dataMap[city_name].color = city_color;
+            this->dataMap[city_name].colorToString = color;
+            this->dataMap[city_name].color = city_color;
             string neighbor;
             while (cities.peek() != '\n' && cities >> neighbor)
             {
-                dataMap[city_name].neighbors.insert(stringToCity.find(neighbor)->second);
+                this->dataMap[city_name].neighbors.insert(stringToCity.find(neighbor)->second);
                 neighbor = "";
             }
         }
@@ -32,7 +32,7 @@ namespace pandemic
 
     int &Board::operator[](City city)
     {
-        return dataMap[city].diseaseLevel;
+        return this->dataMap[city].diseaseLevel;
     }
     ostream &operator<<(ostream &out, Board &board)
     {
@@ -41,9 +41,9 @@ namespace pandemic
 
     bool Board::is_clean()
     {
-        for (auto city : dataMap)
+        for (auto &city : this->dataMap)
         {
-            if (city.second.diseaseLevel != 0)
+            if (city.second.diseaseLevel > 0)
             {
                 return false;
             }
@@ -53,52 +53,70 @@ namespace pandemic
 
     void Board::remove_cures()
     {
+        for (auto &cure : this->curesExist)
+        {
+            cure.second = false;
+        }
     }
 
     void Board::remove_stations()
     {
-        for (auto cities : dataMap)
+        for (auto &cities : this->dataMap)
         {
             cities.second.research = false;
         }
     }
 
-    bool Board::is_neighbors(City src, City dest)
+    bool is_neighbors(Board &b,City src, City dest)
     {
-        if (dataMap[src].neighbors.find(dest) == dataMap[src].neighbors.end())
+        if (b.dataMap[src].neighbors.find(dest) == b.dataMap[src].neighbors.end())
         {
             return false;
         }
         return true;
     }
 
-    bool Board::has_research(City city)
+    bool has_research(Board &b,City city)
     {
-        if (dataMap[city].research)
+        if (b.dataMap[city].research)
         {
             return true;
         }
         return false;
     }
 
-    void Board::build_research(City city)
+    void build_research(Board &b,City city)
     {
-        dataMap[city].research = true;
+        b.dataMap[city].research = true;
     }
 
-    int Board::get_disease_level(City city)
+    int get_disease_level(Board &b, City city)
     {
-        return dataMap[city].diseaseLevel;
+        return b.dataMap[city].diseaseLevel;
     }
-    void Board::set_disease_level(City city, int levelDown)
+    void set_disease_level(Board &b,City city, int levelDown)
     {
-        if (dataMap[city].diseaseLevel >= levelDown)
+        if (b.dataMap[city].diseaseLevel >= levelDown)
         {
-            dataMap[city].diseaseLevel -= levelDown;
+            b.dataMap[city].diseaseLevel = (b.dataMap[city].diseaseLevel)-levelDown;
         }
     }
-    Color Board::get_color(City city){
-        return dataMap[city].color;
+
+    bool is_discovered(Board &b,Color color)
+    {
+        if (b.curesExist[color])
+        {
+            return true;
+        }
+        return false;
+    }
+    void discover_new_cure(Board &b,Color color)
+    {
+        b.curesExist[color] = true;
+    }
+    Color get_color(Board &b,City city)
+    {
+        return b.dataMap[city].color;
     }
 
 }

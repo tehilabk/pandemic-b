@@ -22,8 +22,11 @@ namespace pandemic
             Color color;
             string cityToString;
             string colorToString;
+            
         };
+        map<Color,bool>curesExist;
         map<City, data> dataMap;
+
 
     public:
         Board();
@@ -33,11 +36,13 @@ namespace pandemic
         void remove_cures();
         void remove_stations();
     
-        bool is_neighbors(City src, City dest);
-        bool has_research(City city);
-        void build_research(City city);
-        int get_disease_level(City city);
-        void set_disease_level(City city, int levelDown);
-        Color get_color(City city);
+        friend bool is_neighbors(Board &b,City src, City dest);
+        friend bool has_research(Board &b,City city);
+        friend void build_research(Board &b,City city);
+        friend int get_disease_level(Board &b,City city);
+        friend void set_disease_level(Board &b,City city, int levelDown);
+        friend bool is_discovered(Board &b,Color color);
+        friend void discover_new_cure(Board &b,Color color);
+        friend Color get_color(Board &b,City city);
     };
 }

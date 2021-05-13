@@ -1,6 +1,7 @@
 #include "OperationsExpert.hpp"
 #include "string"
 #include <typeinfo>
+#include <iostream>
 
 using namespace std;
 using namespace pandemic;
@@ -16,7 +17,7 @@ namespace pandemic
 
     Player &OperationsExpert::build()
     {
-        this->gameBoard.build_research(currCity);
+        build_research(this->gameBoard,currCity);
         return *this;
     }
 

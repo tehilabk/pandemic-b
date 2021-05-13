@@ -19,7 +19,7 @@ class Player{
         City currCity;
         set<City> cards;
         map<Color,set<City>> colorNum;
-        map<Color,bool>colorCured;
+       
 
 
     public:

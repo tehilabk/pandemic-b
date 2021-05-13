@@ -1,134 +1,140 @@
 #include "Player.hpp"
-
+#include <iostream>
 using namespace std;
 using namespace pandemic;
 
-
-
-    Player &Player::drive(City dest)
+Player &Player::drive(City dest)
+{
+    if (currCity == dest)
     {
-        if (currCity == dest)
-        {
-            throw invalid_argument("can't drive from city to itself");
-        }
-        if (!(gameBoard.is_neighbors(currCity, dest)))
-        {
-            throw invalid_argument("can't drive, this cities not neighbors");
-        }
-        currCity = dest;
-        return *this;
+        throw invalid_argument("can't drive from city to itself");
     }
-
-    Player &Player::fly_direct(City dest)
+    if (is_neighbors(gameBoard,currCity, dest)== false)
     {
-        if (currCity == dest)
-        {
-            throw invalid_argument("can't fly_direct from city to itself");
-        }
-        if (cards.find(dest) == cards.end())
-        {
-            throw invalid_argument("can't fly_direct, need the city card");
-        }
-        cards.erase(dest);
-        currCity = dest;
-        return *this;
+        throw invalid_argument("can't drive, this cities not neighbors");
     }
-    Player &Player::fly_charter(City dest)
+    currCity = dest;
+    return *this;
+}
+
+Player &Player::fly_direct(City dest)
+{
+    if (currCity == dest)
     {
-        if (currCity == dest)
-        {
-            throw invalid_argument("can't fly_charter from city to itself");
-        }
+        throw invalid_argument("can't fly_direct from city to itself");
+    }
+    if (cards.find(dest) == cards.end())
+    {
+        throw invalid_argument("can't fly_direct, need the city card");
+    }
+    cards.erase(dest);
+    currCity = dest;
+    return *this;
+}
+Player &Player::fly_charter(City dest)
+{
+    if (currCity == dest)
+    {
+        throw invalid_argument("can't fly_charter from city to itself");
+    }
+    if (cards.find(currCity) == cards.end())
+    {
+        throw invalid_argument("can't fly_charter, need this city card");
+    }
+    cards.erase(dest);
+    currCity = dest;
+    return *this;
+}
+Player &Player::fly_shuttle(City dest)
+{
+    if (currCity == dest)
+    {
+        throw invalid_argument("can't fly_shuttle from city to itself");
+    }
+    if (!((has_research(gameBoard,currCity)) && (has_research(gameBoard,dest))))
+    {
+        throw invalid_argument("can't fly_shuttle, need research in cities");
+    }
+    currCity = dest;
+    return *this;
+}
+
+Player &Player::build()
+{
+    if (!(has_research(gameBoard,currCity)))
+    {
         if (cards.find(currCity) == cards.end())
         {
-            throw invalid_argument("can't fly_charter, need this city card");
+            throw invalid_argument("can't build, need this city card");
         }
-        cards.erase(dest);
-        currCity = dest;
-        return *this;
+        build_research(gameBoard,currCity);
+        cards.erase(currCity);
     }
-    Player &Player::fly_shuttle(City dest)
-    {
-        if (currCity == dest)
-        {
-            throw invalid_argument("can't fly_shuttle from city to itself");
-        }
-        if (!((gameBoard.has_research(currCity)) && (gameBoard.has_research(dest))))
-        {
-            throw invalid_argument("can't fly_shuttle, need research in cities");
-        }
-        currCity = dest;
-        return *this;
-    }
+    return *this;
+}
 
-    Player &Player::build()
+Player &Player::discover_cure(Color color)
+{
+    if (!(is_discovered(gameBoard,color)))
     {
-        if (!(gameBoard.has_research(currCity)))
+        if (!(has_research(gameBoard,currCity)))
         {
-            if (cards.find(currCity) == cards.end())
-            {
-                throw invalid_argument("can't build, need this city card");
-            }
-            gameBoard.build_research(currCity);
-            cards.erase(currCity);
+            throw invalid_argument("can't discover_cure, need research in this city");
         }
-        return *this;
-    }
-
-    Player &Player::discover_cure(Color color)
-    {
-        if (!(colorCured[color]))
+        if (colorNum.at(color).size() < fiveCards)
         {
-            if (!(gameBoard.has_research(currCity)))
+            throw invalid_argument("can't discover_cure, need five card in this color");
+        }
+        int i = 0;
+        set<City> removCard;
+
+        for (auto card : colorNum[color])
+        {
+            if (i < 5)
             {
-                throw invalid_argument("can't discover_cure, need research in this city");
-            }
-            if (colorNum.at(color).size() < fiveCards)
-            {
-                throw invalid_argument("can't discover_cure, need five card in this color");
-            }
-            int i = 0;
-            while (i < 5)
-            {
-                auto deletCity = colorNum.at(color).begin();
-                cards.erase(deletCity);
-                colorNum.at(color).erase(deletCity);
+                removCard.insert(card);
+                cards.erase(card);
                 i++;
             }
-            colorCured[color] = true;
         }
-        return *this;
-    }
-    Player &Player::treat(City city)
-    {
-         if (currCity != city)
+        for (auto card : removCard)
         {
-            throw invalid_argument("can't treat another city");
+            colorNum[get_color(gameBoard,card)].erase(card);
         }
-        int disease_level = gameBoard.get_disease_level(city);
-        if (disease_level == 0)
-        {
-            throw invalid_argument("can't treat, disease level=0");
-        }
-        if (colorCured[gameBoard.get_color(city)])
-        {
-            gameBoard.set_disease_level(city, disease_level);
-        }
-        else
-        {
-            gameBoard.set_disease_level(city, 1);
-        }
-        return *this;
-    }
-    Player &Player::take_card(City city)
-    {
-        cards.insert(city);
-        colorNum[gameBoard.get_color(city)].insert(city);
-        return *this;
-    }
-    void Player::remove_cards()
-    {
-        cards.clear();
-        colorNum.clear();
-    }
 
+        discover_new_cure(gameBoard,color);
+    }
+    return *this;
+}
+Player &Player::treat(City city)
+{
+    if (currCity != city)
+    {
+        throw invalid_argument("can't treat another city");
+    }
+    int disease_level = get_disease_level(gameBoard,city);
+    if (disease_level == 0)
+    {
+        throw invalid_argument("can't treat, disease level=0");
+    }
+    if (is_discovered(gameBoard,get_color(gameBoard,city)))
+    {
+        set_disease_level(gameBoard,city, disease_level);
+    }
+    else
+    {
+        set_disease_level(gameBoard,city, 1);
+    }
+    return *this;
+}
+Player &Player::take_card(City city)
+{
+    cards.insert(city);
+    colorNum[get_color(gameBoard,city)].insert(city);
+    return *this;
+}
+void Player::remove_cards()
+{
+    cards.clear();
+    colorNum.clear();
+}

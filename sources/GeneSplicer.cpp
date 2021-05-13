@@ -7,7 +7,6 @@ using namespace pandemic;
 namespace pandemic
 {
 
-
     string GeneSplicer::role()
     {
         string name = typeid(GeneSplicer).name();
@@ -16,9 +15,9 @@ namespace pandemic
 
     Player &GeneSplicer::discover_cure(Color color)
     {
-        if (!(colorCured[color]))
+        if (!(is_discovered(this->gameBoard,color)))
         {
-            if (!(gameBoard.has_research(currCity)))
+            if (!(has_research(this->gameBoard,currCity)))
             {
                 throw invalid_argument("can't discover_cure, need research in this city");
             }
@@ -28,20 +27,21 @@ namespace pandemic
             }
             int i = 0;
             set<City> removCard;
-            for (auto card : cards)
+            for (auto &card : cards)
             {
                 if (i < 5)
                 {
                     removCard.insert(card);
-                    cards.erase(card);
                     i++;
                 }
-                for (auto card : removCard)
-                {
-                    colorNum[gameBoard.get_color(card)].erase(card);
-                }
             }
-            colorCured[color] = true;
+            for (auto &card : removCard)
+            {
+                cards.erase(card);
+                colorNum[get_color(this->gameBoard,card)].erase(card);
+            }
+
+            discover_new_cure(this->gameBoard,color);
         }
         return *this;
     }

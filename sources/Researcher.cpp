@@ -7,30 +7,39 @@ using namespace pandemic;
 
 namespace pandemic
 {
-   
 
-    string Researcher::role() {
+    string Researcher::role()
+    {
         string name = typeid(Researcher).name();
         return name;
     }
 
-     Player& Researcher::discover_cure(Color color) {
-        if (!(colorCured[color]))
+    Player &Researcher::discover_cure(Color color)
+    {
+        if (!(is_discovered(this->gameBoard,color)))
         {
-            if (colorNum.at(color).size() < fiveCards)
+            if (colorNum[color].size() < fiveCards)
             {
                 throw invalid_argument("can't discover_cure, need five card in this color");
             }
             int i = 0;
-            while (i < 5)
+            set<City> removCard;
+
+            for (auto &card : colorNum[color])
             {
-                auto deletCity = colorNum.at(color).begin();
-                cards.erase(deletCity);
-                colorNum.at(color).erase(deletCity);
-                i++;
+                if (i < 5)
+                {
+                    removCard.insert(card);
+                    cards.erase(card);
+                    i++;
+                }
             }
-            colorCured[color]=true;
-        } 
+            for (auto &card : removCard)
+            {
+                colorNum[get_color(this->gameBoard,card)].erase(card);
+            }
+            discover_new_cure(this->gameBoard,color);
+        }
         return *this;
     }
 }

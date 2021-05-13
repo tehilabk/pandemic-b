@@ -14,18 +14,18 @@ namespace pandemic
     }
 
     Player& Virologist::treat(City city) {
-        int disease_level = gameBoard.get_disease_level(city);
+        int disease_level = get_disease_level(this->gameBoard,city);
         if (disease_level == 0)
         {
             throw invalid_argument("can't treat, disease level=0");
         }
-        if (colorCured[gameBoard.get_color(city)])
+        if (is_discovered(this->gameBoard,get_color(this->gameBoard,city)))
         {
-            gameBoard.set_disease_level(city, disease_level);
+            set_disease_level(this->gameBoard,city, disease_level);
         }
         else
         {
-            gameBoard.set_disease_level(city, 1);
+            set_disease_level(this->gameBoard,city, 1);
         }
         return *this;
     }

@@ -12,7 +12,7 @@ namespace pandemic{
         Black,
         Red
     };
-    static const map<std::string , Color> stringToColor{
+    static const map<std::string , Color> stringToColor ={
         {"Yellow",Color::Yellow},
         {"Red",Color::Red},
         {"Blue",Color::Blue},
