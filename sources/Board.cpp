@@ -78,11 +78,8 @@ namespace pandemic
 
     bool has_research(Board &b,City city)
     {
-        if (b.dataMap.at(city).research == true)
-        {
-            return true;
-        }
-        return false;
+        return (b.dataMap.at(city).research);
+        
     }
 
     void build_research(Board &b,City city)
@@ -118,5 +115,10 @@ namespace pandemic
     {
         return b.dataMap[city].color;
     }
+
+    string to_string (Board &b,City city){
+        return b.dataMap[city].cityToString;
+    }
+
 
 }

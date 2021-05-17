@@ -29,6 +29,7 @@ Player &Player::fly_direct(City dest)
         throw invalid_argument("can't fly_direct, need the city card");
     }
     cards.erase(dest);
+    colorNum[get_color(gameBoard,dest)].erase(dest);
     currCity = dest;
     return *this;
 }
@@ -40,9 +41,10 @@ Player &Player::fly_charter(City dest)
     }
     if (cards.find(currCity) == cards.end())
     {
-        throw invalid_argument("can't fly_charter, need this city card");
+        throw invalid_argument("can't fly_charter, need this city " +to_string(gameBoard,dest)+ " card");
     }
-    cards.erase(dest);
+    cards.erase(currCity);
+    colorNum[get_color(gameBoard,currCity)].erase(currCity);
     currCity = dest;
     return *this;
 }
@@ -70,6 +72,7 @@ Player &Player::build()
         }
         build_research(gameBoard,currCity);
         cards.erase(currCity);
+        colorNum[get_color(gameBoard,currCity)].erase(currCity);
     }
     return *this;
 }
@@ -130,12 +133,13 @@ Player &Player::treat(City city)
 }
 Player &Player::take_card(City city)
 {
-    cards.insert(city);
+    
     colorNum[get_color(gameBoard,city)].insert(city);
+    cards.insert(city);
     return *this;
 }
 void Player::remove_cards()
 {
-    cards.clear();
+    this->cards.erase(this->cards.begin(), this->cards.end());
     colorNum.clear();
 }

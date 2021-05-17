@@ -13,6 +13,11 @@ namespace pandemic{
     }
     
     Player& FieldDoctor::treat(City city){
+
+        if (currCity == city){
+            Player::treat(city);
+            return *this;
+        }
         if (!(is_neighbors(this->gameBoard,currCity, city)))
         {
             throw invalid_argument("can't treat, this cities not neighbors");
