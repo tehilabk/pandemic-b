@@ -10,7 +10,7 @@ Player &Player::drive(City dest)
     {
         throw invalid_argument("can't drive from city to itself");
     }
-    if (is_neighbors(gameBoard,currCity, dest)== false)
+    if (!(is_neighbors(gameBoard,currCity, dest)))
     {
         throw invalid_argument("can't drive, this cities not neighbors");
     }
@@ -92,16 +92,16 @@ Player &Player::discover_cure(Color color)
         int i = 0;
         set<City> removCard;
 
-        for (auto card : colorNum[color])
+        for (const auto &card : colorNum[color])
         {
-            if (i < 5)
+            if (i < fiveCards)
             {
                 removCard.insert(card);
                 cards.erase(card);
                 i++;
             }
         }
-        for (auto card : removCard)
+        for (const auto &card : removCard)
         {
             colorNum[get_color(gameBoard,card)].erase(card);
         }

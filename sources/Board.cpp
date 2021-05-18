@@ -10,7 +10,8 @@ namespace pandemic
     Board::Board()
     {
         ifstream cities{"cities_map.txt"};
-        string city, color;
+        string city;
+        string color;
         while (cities >> city >> color)
         {
             City city_name = stringToCity.find(city)->second;
@@ -69,11 +70,8 @@ namespace pandemic
 
     bool is_neighbors(Board &b,City src, City dest)
     {
-        if (b.dataMap[src].neighbors.find(dest) == b.dataMap[src].neighbors.end())
-        {
-            return false;
-        }
-        return true;
+        return !(b.dataMap[src].neighbors.find(dest) == b.dataMap[src].neighbors.end());
+
     }
 
     bool has_research(Board &b,City city)
@@ -101,11 +99,8 @@ namespace pandemic
 
     bool is_discovered(Board &b,Color color)
     {
-        if (b.curesExist[color])
-        {
-            return true;
-        }
-        return false;
+        return (b.curesExist[color]);
+        
     }
     void discover_new_cure(Board &b,Color color)
     {

@@ -28,7 +28,7 @@ namespace pandemic
             int i = 0;
             set<City> removCard;
 
-            for (auto &card : colorNum[color])
+            for (const auto &card : colorNum[color])
             {
                 if (i < numOfCards)
                 {
@@ -37,7 +37,7 @@ namespace pandemic
                     i++;
                 }
             }
-            for (auto &card : removCard)
+            for (const auto &card : removCard)
             {
                 colorNum[get_color(this->gameBoard,card)].erase(card);
             }

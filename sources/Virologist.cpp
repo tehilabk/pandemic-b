@@ -19,7 +19,7 @@ namespace pandemic
         {
             return Player::treat(city);
         }
-        else if (cards.find(city) == cards.end())
+        if (cards.find(city) == cards.end())
         {
             throw invalid_argument("can't fly_direct, need the city card");
         }

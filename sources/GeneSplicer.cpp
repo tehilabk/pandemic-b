@@ -26,15 +26,15 @@ namespace pandemic
             }
             int i = 0;
             set<City> removCard;
-            for (auto &card : cards)
+            for (const auto &card : cards)
             {
-                if (i < 5)
+                if (i < fiveCards)
                 {
                     removCard.insert(card);
                     i++;
                 }
             }
-            for (auto &card : removCard)
+            for (const auto &card : removCard)
             {
                 cards.erase(card);
                 colorNum[get_color(this->gameBoard,card)].erase(card);
