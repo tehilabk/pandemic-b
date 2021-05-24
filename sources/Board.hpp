@@ -3,6 +3,7 @@
 #include "Color.hpp"
 #include <stdio.h>
 #include <fstream>
+#include <iostream>
 #include <map>
 #include <set>
 #include "string"
@@ -35,7 +36,9 @@ namespace pandemic
         bool is_clean();
         void remove_cures();
         void remove_stations();
-    
+
+    //*************** Help Functions***************
+
         friend bool is_neighbors(Board &b,City src, City dest);
         friend bool has_research(Board &b,City city);
         friend void build_research(Board &b,City city);
@@ -44,6 +47,5 @@ namespace pandemic
         friend bool is_discovered(Board &b,Color color);
         friend void discover_new_cure(Board &b,Color color);
         friend Color get_color(Board &b,City city);
-        friend string to_string (Board &b,City city);
     };
 }

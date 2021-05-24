@@ -4,6 +4,13 @@
 using namespace std;
 using namespace pandemic;
 
+
+/*
+--------------------------------------------
+drive from city to another if they are connected 
+--------------------------------------------
+*/
+
 Player &Player::drive(City dest)
 {
     if (currCity == dest)
@@ -18,6 +25,11 @@ Player &Player::drive(City dest)
     return *this;
 }
 
+/*
+--------------------------------------------
+fly direct from city to another only with card of the city dest
+--------------------------------------------
+*/
 Player &Player::fly_direct(City dest)
 {
     if (currCity == dest)
@@ -33,6 +45,12 @@ Player &Player::fly_direct(City dest)
     currCity = dest;
     return *this;
 }
+
+/*
+--------------------------------------------
+fly charter from city to another only with card of current city
+--------------------------------------------
+*/
 Player &Player::fly_charter(City dest)
 {
     if (currCity == dest)
@@ -41,13 +59,20 @@ Player &Player::fly_charter(City dest)
     }
     if (cards.find(currCity) == cards.end())
     {
-        throw invalid_argument("can't fly_charter, need this city " +to_string(gameBoard,dest)+ " card");
+        throw invalid_argument("can't fly_charter, need this city card");
     }
     cards.erase(currCity);
     colorNum[get_color(gameBoard,currCity)].erase(currCity);
     currCity = dest;
     return *this;
 }
+
+
+/*
+--------------------------------------------
+fly shuttle from city to another only if there is research station in current city and dest city 
+--------------------------------------------
+*/
 Player &Player::fly_shuttle(City dest)
 {
     if (currCity == dest)
@@ -62,6 +87,11 @@ Player &Player::fly_shuttle(City dest)
     return *this;
 }
 
+/*
+--------------------------------------------
+build research station with card of current city
+--------------------------------------------
+*/
 Player &Player::build()
 {
     if (!(has_research(gameBoard,currCity)))
@@ -77,6 +107,13 @@ Player &Player::build()
     return *this;
 }
 
+/*
+--------------------------------------------
+discover cure in a specified color:
+1.there is a research station in current city
+2.throw 5 cards with same color of discovered cure
+--------------------------------------------
+*/
 Player &Player::discover_cure(Color color)
 {
     if (!(is_discovered(gameBoard,color)))
@@ -110,6 +147,14 @@ Player &Player::discover_cure(Color color)
     }
     return *this;
 }
+
+/*
+--------------------------------------------
+treat the disease of current city on one level 
+1. if there is cure of city color - the city completly cured
+2. if there is no disease - throw exeption
+--------------------------------------------
+*/
 Player &Player::treat(City city)
 {
     if (currCity != city)
@@ -131,6 +176,12 @@ Player &Player::treat(City city)
     }
     return *this;
 }
+
+/*
+--------------------------------------------
+take city card
+--------------------------------------------
+*/
 Player &Player::take_card(City city)
 {
     
@@ -138,6 +189,12 @@ Player &Player::take_card(City city)
     cards.insert(city);
     return *this;
 }
+
+/*
+--------------------------------------------
+removes all cards for this pleyer
+--------------------------------------------
+*/
 void Player::remove_cards()
 {
     this->cards.erase(this->cards.begin(), this->cards.end());

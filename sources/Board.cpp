@@ -6,7 +6,11 @@ using namespace pandemic;
 
 namespace pandemic
 {
-
+/*
+--------------------------------------------
+init cities and neighbors frome map game
+--------------------------------------------
+*/
     Board::Board()
     {
         ifstream cities{"cities_map.txt"};
@@ -30,16 +34,59 @@ namespace pandemic
         }
         cities.close();
     }
-
+/*
+--------------------------------------------
+set disease level in a specified city
+--------------------------------------------
+*/
     int &Board::operator[](City city)
     {
         return this->dataMap[city].diseaseLevel;
     }
+
+/*
+--------------------------------------------
+print the current game status
+--------------------------------------------
+*/
     ostream &operator<<(ostream &out, Board &board)
     {
+        out << "***********************Game Board!***********************\n"<< endl;
+
+        out << "----------------------Disease Status:----------------------\n"<< endl;
+        for (auto &city : board.dataMap)
+        {
+            out << "City: " << city.second.cityToString << ", Disease Level :" << city.second.diseaseLevel << endl;
+        }
+        out << "----------------------Cures Discovered:----------------------\n"<< endl;
+        for (auto &cure : board.curesExist)
+        {
+            if(cure.second == true){
+                for (auto &city : board.dataMap)
+                {
+                    if(cure.first == city.second.color){
+                        out << "Color: " << city.second.colorToString <<endl;
+                    }
+                }
+            }
+
+        }
+        out << "----------------------Research Stations:----------------------\n"<< endl;
+         for (auto &city : board.dataMap)
+        {
+            if(city.second.research){
+            out << "City : " << city.second.cityToString<< endl;
+        }
+        }
+
         return out;
     }
-
+    
+/*
+--------------------------------------------
+return if board is clean from diseases
+--------------------------------------------
+*/
     bool Board::is_clean()
     {
         for (auto &city : this->dataMap)
@@ -52,6 +99,11 @@ namespace pandemic
         return true;
     }
 
+/*
+--------------------------------------------
+remove all cures in discovered in the game
+--------------------------------------------
+*/
     void Board::remove_cures()
     {
         for (auto &cure : this->curesExist)
@@ -60,6 +112,11 @@ namespace pandemic
         }
     }
 
+/*
+--------------------------------------------
+remove all research stations in the game
+--------------------------------------------
+*/
     void Board::remove_stations()
     {
         for (auto &cities : this->dataMap)
@@ -67,52 +124,88 @@ namespace pandemic
             cities.second.research = false;
         }
     }
+    
 
-    bool is_neighbors(Board &b,City src, City dest)
+//*************** Help Functions***************
+
+
+/*
+--------------------------------------------
+returns if City src and City dest is neighbors
+--------------------------------------------
+*/
+
+    bool is_neighbors(Board &b, City src, City dest)
     {
         return !(b.dataMap[src].neighbors.find(dest) == b.dataMap[src].neighbors.end());
-
     }
+/*
+--------------------------------------------
+returns if there is research station in a specified city
+--------------------------------------------
+*/
 
-    bool has_research(Board &b,City city)
+    bool has_research(Board &b, City city)
     {
         return (b.dataMap.at(city).research);
-        
     }
-
-    void build_research(Board &b,City city)
+/*
+--------------------------------------------
+build research station in a specified city
+--------------------------------------------
+*/
+    void build_research(Board &b, City city)
     {
         b.dataMap[city].research = true;
     }
-
+/*
+--------------------------------------------
+returns the disease_level in a specified city
+--------------------------------------------
+*/
     int get_disease_level(Board &b, City city)
     {
         return b.dataMap[city].diseaseLevel;
     }
-    void set_disease_level(Board &b,City city, int levelDown)
+/*
+--------------------------------------------
+set the disease_level in a specified city
+--------------------------------------------
+*/   
+    void set_disease_level(Board &b, City city, int levelDown)
     {
         if (b.dataMap[city].diseaseLevel >= levelDown)
         {
             b.dataMap[city].diseaseLevel -= levelDown;
         }
     }
-
-    bool is_discovered(Board &b,Color color)
+/*
+--------------------------------------------
+returns if there is cure for spesified color
+--------------------------------------------
+*/
+    bool is_discovered(Board &b, Color color)
     {
         return (b.curesExist[color]);
-        
     }
-    void discover_new_cure(Board &b,Color color)
+
+/*
+--------------------------------------------
+discoveres new cure for spesified color
+--------------------------------------------
+*/    
+    void discover_new_cure(Board &b, Color color)
     {
         b.curesExist[color] = true;
     }
-    Color get_color(Board &b,City city)
+/*
+--------------------------------------------
+returns the color of spesified city
+--------------------------------------------
+*/    
+    Color get_color(Board &b, City city)
     {
         return b.dataMap[city].color;
-    }
-
-    string to_string (Board &b,City city){
-        return b.dataMap[city].cityToString;
     }
 
 
